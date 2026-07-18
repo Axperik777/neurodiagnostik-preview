@@ -1761,7 +1761,8 @@ h2 {
 .contact-card {
   display: grid;
   grid-template-columns: .82fr 1.18fr;
-  gap: 7vw;
+  column-gap: 7vw;
+  row-gap: 44px;
   padding: 70px;
   border-radius: var(--radius-xl);
   color: var(--white);
@@ -1828,6 +1829,90 @@ h2 {
 
 .contact-item small {
   color: var(--mint);
+}
+
+.contact-map {
+  position: relative;
+  grid-column: 1 / -1;
+  height: 430px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, .18);
+  border-radius: 28px;
+  background: #dcebea;
+}
+
+.contact-map iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  filter: saturate(.72) contrast(.96);
+  transition: filter .3s ease;
+}
+
+.contact-map:hover iframe {
+  filter: saturate(.92) contrast(.98);
+}
+
+.contact-map-caption {
+  position: absolute;
+  right: 22px;
+  bottom: 22px;
+  left: 22px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 17px;
+  padding: 18px 20px;
+  border: 1px solid rgba(18, 52, 61, .12);
+  border-radius: 20px;
+  color: var(--ink);
+  background: rgba(255, 255, 255, .92);
+  box-shadow: 0 18px 42px rgba(18, 52, 61, .16);
+  backdrop-filter: blur(14px);
+}
+
+.contact-map-pin {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--white);
+  background: var(--blue);
+}
+
+.contact-map-pin svg {
+  width: 23px;
+  fill: currentColor;
+}
+
+.contact-map-pin circle {
+  fill: var(--mint);
+}
+
+.contact-map-caption div {
+  display: grid;
+  gap: 4px;
+}
+
+.contact-map-caption small {
+  color: var(--blue);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.contact-map-caption strong {
+  font-size: 14px;
+  line-height: 1.35;
+}
+
+.contact-map-caption > a {
+  color: var(--blue);
+  font-size: 12px;
+  font-weight: 800;
+  white-space: nowrap;
 }
 
 .site-footer {
@@ -2064,6 +2149,10 @@ h2 {
   .contact-copy h2 { font-size: 43px; }
   .contact-item { min-height: 150px; padding: 22px; }
   .contact-item strong { overflow-wrap: anywhere; font-size: 22px; }
+  .contact-map { height: 360px; border-radius: 22px; }
+  .contact-map-caption { right: 12px; bottom: 12px; left: 12px; grid-template-columns: auto 1fr; gap: 12px; padding: 14px; }
+  .contact-map-caption > a { grid-column: 1 / -1; padding-top: 10px; border-top: 1px solid rgba(18, 52, 61, .1); }
+  .contact-map-pin { width: 38px; height: 38px; }
   .footer-grid { grid-template-columns: 1fr; gap: 32px; }
   .footer-grid > p { grid-column: auto; grid-row: auto; }
 }

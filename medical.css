@@ -1906,6 +1906,13 @@ h2 {
   .medical-strip p { font-size: 13px; }
   .medical-strip span { font-size: 7px; }
   .section-heading { gap: 26px; }
+  .section-heading > *,
+  .preparation-card > * { min-width: 0; }
+  .section-heading h2,
+  .preparation-card h2 {
+    max-width: 100%;
+    overflow-wrap: break-word;
+  }
   .section-heading > p { font-size: 16px; }
   .symptom-grid,
   .model-grid,

@@ -95,6 +95,7 @@ main > .result { order: 10; }
 main > .trust { order: 11; }
 main > .questions { order: 12; }
 main > .preparation { order: 13; }
+main > .contact { order: 14; }
 
 a {
   color: inherit;
@@ -1734,6 +1735,83 @@ h2 {
   font-family: Georgia, serif;
 }
 
+.contact {
+  padding: 0 0 46px;
+  background: var(--paper);
+}
+
+.contact-card {
+  display: grid;
+  grid-template-columns: .82fr 1.18fr;
+  gap: 7vw;
+  padding: 70px;
+  border-radius: var(--radius-xl);
+  color: var(--white);
+  background:
+    radial-gradient(circle at 85% 0, rgba(169, 216, 207, .2), transparent 32%),
+    linear-gradient(140deg, #163f49, #102f37);
+  box-shadow: var(--shadow);
+}
+
+.contact-copy h2 {
+  margin: 0 0 28px;
+  color: var(--white);
+  font-size: clamp(48px, 5vw, 72px);
+}
+
+.contact-copy > p:not(.eyebrow) {
+  max-width: 460px;
+  margin: 0;
+  color: rgba(255, 255, 255, .64);
+  font-size: 15px;
+}
+
+.contact-card .eyebrow {
+  color: var(--mint);
+}
+
+.contact-list {
+  display: grid;
+  gap: 12px;
+}
+
+.contact-item {
+  display: grid;
+  min-height: 178px;
+  align-content: space-between;
+  gap: 18px;
+  padding: 28px;
+  border: 1px solid rgba(255, 255, 255, .14);
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, .07);
+  transition: transform .28s ease, border-color .28s ease, background-color .28s ease;
+}
+
+.contact-item:hover {
+  border-color: rgba(169, 216, 207, .48);
+  background: rgba(255, 255, 255, .11);
+  transform: translateY(-3px);
+}
+
+.contact-item span,
+.contact-item small {
+  color: rgba(255, 255, 255, .54);
+  font-size: 9px;
+  font-weight: 750;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.contact-item strong {
+  color: var(--white);
+  font-size: clamp(22px, 2.1vw, 32px);
+  line-height: 1.2;
+}
+
+.contact-item small {
+  color: var(--mint);
+}
+
 .site-footer {
   padding: 60px 0;
   color: var(--white);
@@ -1838,7 +1916,8 @@ h2 {
   .section-heading,
   .methods-layout,
   .questions-grid,
-  .preparation-card { grid-template-columns: 1fr; gap: 40px; }
+  .preparation-card,
+  .contact-card { grid-template-columns: 1fr; gap: 40px; }
   .section-heading > p { max-width: 700px; margin-bottom: 0; }
   .emergency-note { grid-template-columns: 1fr; gap: 12px; }
   .emergency-note span { justify-self: start; }
@@ -1961,6 +2040,11 @@ h2 {
   .preparation { padding-bottom: 28px; }
   .preparation-card { padding: 38px 22px; }
   .preparation-card li { grid-template-columns: 38px 1fr; font-size: 13px; }
+  .contact { padding-bottom: 28px; }
+  .contact-card { gap: 28px; padding: 38px 22px; border-radius: 26px; }
+  .contact-copy h2 { font-size: 43px; }
+  .contact-item { min-height: 150px; padding: 22px; }
+  .contact-item strong { overflow-wrap: anywhere; font-size: 22px; }
   .footer-grid { grid-template-columns: 1fr; gap: 32px; }
   .footer-grid > p { grid-column: auto; grid-row: auto; }
 }

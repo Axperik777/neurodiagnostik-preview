@@ -1179,7 +1179,12 @@ h2 {
   height: 100%;
   object-fit: cover;
   object-position: center 28%;
+  filter: saturate(.9) contrast(.98) brightness(1.01);
   transition: transform .55s cubic-bezier(.2, .7, .2, 1);
+}
+
+.specialist-card--energy-lead .specialist-photo img {
+  object-position: center 36%;
 }
 
 .specialist-card:hover .specialist-photo img {

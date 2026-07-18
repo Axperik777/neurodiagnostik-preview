@@ -1082,13 +1082,14 @@ h2 {
 
 .specialist-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(6, 1fr);
   gap: 16px;
   margin-top: 24px;
 }
 
 .specialist-card {
   display: flex;
+  grid-column: span 2;
   min-height: 590px;
   flex-direction: column;
   padding: 31px;
@@ -1119,10 +1120,27 @@ h2 {
 }
 
 .specialist-card--energy-lead {
+  grid-column: span 3;
   background:
     radial-gradient(circle at 100% 0, rgba(195, 166, 109, .24), transparent 38%),
     radial-gradient(circle at 0 100%, rgba(128, 109, 154, .33), transparent 42%),
     linear-gradient(145deg, #3d3549, #183c45 72%);
+}
+
+.specialist-card--energy-secondary {
+  grid-column: span 3;
+  background:
+    radial-gradient(circle at 0 0, rgba(169, 216, 207, .23), transparent 38%),
+    radial-gradient(circle at 100% 100%, rgba(195, 166, 109, .18), transparent 40%),
+    linear-gradient(145deg, #173e47, #244c4b 72%);
+}
+
+.specialist-card--energy-secondary .specialist-photo img {
+  object-position: center top;
+}
+
+.specialist-card--wide {
+  grid-column: span 3;
 }
 
 .specialist-card--coordinator {
@@ -1922,6 +1940,7 @@ h2 {
   .emergency-note { grid-template-columns: 1fr; gap: 12px; }
   .emergency-note span { justify-self: start; }
   .specialist-grid { grid-template-columns: repeat(2, 1fr); }
+  .specialist-grid > .specialist-card { grid-column: auto; }
   .specialist-card { min-height: 560px; }
   .board-photo { height: 520px; }
   .board-photo figcaption { grid-template-columns: 1fr 1.7fr; }

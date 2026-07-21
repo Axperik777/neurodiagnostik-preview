@@ -1,0 +1,1 @@
+document.querySelectorAll('[data-dialog]').forEach(link=>link.addEventListener('click',event=>{event.preventDefault();document.querySelector('#contact').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});}));

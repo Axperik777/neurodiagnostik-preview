@@ -3381,3 +3381,97 @@ h2 {
     grid-template-columns: 1fr;
   }
 }
+/* Consent layer: Meta Pixel remains disabled until the visitor opts in. */
+.cookie-consent {
+  position: fixed;
+  z-index: 1000;
+  right: clamp(14px, 3vw, 34px);
+  bottom: clamp(14px, 3vw, 34px);
+  left: clamp(14px, 3vw, 34px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  max-width: 1040px;
+  margin-inline: auto;
+  padding: 20px 22px;
+  border: 1px solid rgba(19, 59, 55, 0.18);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.98);
+  box-shadow: 0 22px 70px rgba(15, 45, 43, 0.22);
+  color: #173b38;
+}
+
+.cookie-consent-copy {
+  max-width: 690px;
+}
+
+.cookie-consent-copy strong {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 17px;
+}
+
+.cookie-consent-copy p {
+  margin: 0;
+  color: #45615f;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.cookie-consent-copy a {
+  color: #146e66;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.cookie-consent-actions {
+  display: flex;
+  flex: 0 0 auto;
+  gap: 10px;
+}
+
+.cookie-button {
+  min-height: 44px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.cookie-button-secondary {
+  border: 1px solid rgba(19, 59, 55, 0.24);
+  background: #fff;
+  color: #173b38;
+}
+
+.cookie-button-primary {
+  border: 1px solid #176e66;
+  background: #176e66;
+  color: #fff;
+}
+
+.cookie-button:focus-visible {
+  outline: 3px solid rgba(22, 110, 102, 0.28);
+  outline-offset: 2px;
+}
+
+@media (max-width: 760px) {
+  .cookie-consent {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 16px;
+    padding: 18px;
+  }
+
+  .cookie-consent-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .cookie-button {
+    width: 100%;
+  }
+}

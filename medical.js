@@ -8,6 +8,120 @@ const header = document.querySelector('.site-header');
 
 window.dataLayer = window.dataLayer || [];
 
+const META_PIXEL_ID = '1198298872491119';
+const CONSENT_STORAGE_KEY = 'neurodiagnostik:marketing-consent:v1';
+const ATTRIBUTION_STORAGE_KEY = 'neurodiagnostik:attribution:v1';
+const ATTRIBUTION_KEYS = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term', 'fbclid'];
+
+function readStorage(key) {
+  try { return window.localStorage.getItem(key); } catch { return null; }
+}
+
+function writeStorage(key, value) {
+  try { window.localStorage.setItem(key, value); } catch { /* Storage can be blocked. */ }
+}
+
+function captureAttribution() {
+  const parameters = new URLSearchParams(window.location.search);
+  const current = Object.fromEntries(ATTRIBUTION_KEYS
+    .filter((key) => parameters.has(key))
+    .map((key) => [key, parameters.get(key)]));
+
+  let previous = {};
+  try { previous = JSON.parse(readStorage(ATTRIBUTION_STORAGE_KEY) || '{}'); } catch { previous = {}; }
+  const attribution = { ...previous, ...current };
+
+  if (Object.keys(current).length) writeStorage(ATTRIBUTION_STORAGE_KEY, JSON.stringify(attribution));
+  return attribution;
+}
+
+const attribution = captureAttribution();
+window.NDAttribution = { ...attribution };
+
+function loadMetaPixel() {
+  if (window.__ndMetaPixelInitialized) return;
+
+  if (!window.fbq) {
+    const fbq = function () {
+      fbq.callMethod ? fbq.callMethod.apply(fbq, arguments) : fbq.queue.push(arguments);
+    };
+    window.fbq = fbq;
+    window._fbq = fbq;
+    fbq.push = fbq;
+    fbq.loaded = true;
+    fbq.version = '2.0';
+    fbq.queue = [];
+
+    const script = document.createElement('script');
+    script.async = true;
+    script.src = 'https://connect.facebook.net/en_US/fbevents.js';
+    document.head.appendChild(script);
+  }
+
+  window.fbq('consent', 'grant');
+  window.fbq('init', META_PIXEL_ID);
+  window.fbq('track', 'PageView');
+  window.__ndMetaPixelInitialized = true;
+  window.dataLayer.push({ event: 'meta_pixel_ready', page_path: window.location.pathname });
+}
+
+function trackMeta(eventName, parameters = {}) {
+  if (!window.__ndMetaPixelInitialized || typeof window.fbq !== 'function') return;
+  window.fbq('track', eventName, parameters);
+}
+
+function setMarketingConsent(value) {
+  writeStorage(CONSENT_STORAGE_KEY, value);
+  window.dataLayer.push({ event: 'marketing_consent_update', consent: value });
+  if (value === 'granted') loadMetaPixel();
+  if (value === 'denied' && typeof window.fbq === 'function') window.fbq('consent', 'revoke');
+}
+
+function showConsentBanner() {
+  document.querySelector('.cookie-consent')?.remove();
+
+  const banner = document.createElement('section');
+  banner.className = 'cookie-consent';
+  banner.setAttribute('role', 'dialog');
+  banner.setAttribute('aria-modal', 'false');
+  banner.setAttribute('aria-labelledby', 'cookie-consent-title');
+  banner.innerHTML = `
+    <div class="cookie-consent-copy">
+      <strong id="cookie-consent-title">Настройки конфиденциальности</strong>
+      <p>С вашего согласия мы используем Meta Pixel для измерения рекламы и переходов к способам связи. Медицинские сведения, имя и телефон в Meta не передаются. <a href="terms.html#privacy">Подробнее</a></p>
+    </div>
+    <div class="cookie-consent-actions">
+      <button class="cookie-button cookie-button-secondary" type="button" data-cookie-deny>Только необходимые</button>
+      <button class="cookie-button cookie-button-primary" type="button" data-cookie-accept>Разрешить аналитику</button>
+    </div>`;
+
+  banner.querySelector('[data-cookie-deny]').addEventListener('click', () => {
+    setMarketingConsent('denied');
+    banner.remove();
+  });
+  banner.querySelector('[data-cookie-accept]').addEventListener('click', () => {
+    setMarketingConsent('granted');
+    banner.remove();
+  });
+  document.body.appendChild(banner);
+}
+
+const storedConsent = readStorage(CONSENT_STORAGE_KEY);
+if (storedConsent === 'granted') loadMetaPixel();
+if (!storedConsent) showConsentBanner();
+
+document.querySelectorAll('[data-cookie-settings]').forEach((link) => {
+  link.addEventListener('click', (event) => {
+    event.preventDefault();
+    showConsentBanner();
+  });
+});
+
+window.NDTracking = {
+  getAttribution: () => ({ ...window.NDAttribution }),
+  trackLead: (parameters = {}) => trackMeta('Lead', parameters)
+};
+
 function track(event, data = {}) {
   window.dataLayer.push({ event, page_path: window.location.pathname, ...data });
 }
@@ -82,6 +196,17 @@ document.querySelectorAll('[data-cta-location]').forEach((link) => {
     location: link.dataset.ctaLocation,
     destination: link.getAttribute('href')
   }));
+});
+
+document.querySelectorAll('a[href^="tel:"], a[href*="wa.me/"]').forEach((link) => {
+  link.addEventListener('click', () => {
+    const channel = link.href.startsWith('tel:') ? 'phone' : 'whatsapp';
+    track('contact_click', { channel });
+    trackMeta('Contact', {
+      content_name: channel,
+      content_category: 'website_contact'
+    });
+  });
 });
 
 document.querySelectorAll('.accordion details').forEach((details) => {
